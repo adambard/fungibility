@@ -1,0 +1,18 @@
+{
+  "name": "fungibility",
+  "version": "0.0.1",
+  "description": "A Readability clone for use with heroku",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "readability-node": "0.1.0",
+    "jsdom": "8.2.0"
+  },
+  "engines": {
+    "node": "5.9.0"
+  },
+  "license": "MIT"
+}
+

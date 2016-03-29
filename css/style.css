@@ -1,0 +1,46 @@
+body{
+    background: #fff;
+    font-family: "Libre Baskerville", "Times New Roman", serif;
+    font-size: 120%;
+}
+
+header{
+    border-bottom: 1px solid #ccc;
+}
+
+header h1, header form, header form label, header form input, header form button{
+    display: inline-block;
+}
+
+header h1{
+    margin-right: 20px;
+    font-size: 20px;
+}
+
+header form input{
+    width: 30em;
+}
+input, button{
+    font-size: inherit;
+    line-height: inherit;
+    font-family: inherit;
+}
+
+button{
+    cursor: pointer;
+}
+
+header h1 a{
+    text-decoration: none;
+}
+
+main {
+    font-size: 18px;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 900px;
+    margin: 0px auto;
+    padding: 0 10px;
+}
