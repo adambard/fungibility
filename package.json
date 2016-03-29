@@ -8,7 +8,8 @@
   },
   "dependencies": {
     "readability-node": "0.1.0",
-    "jsdom": "8.2.0"
+    "jsdom": "8.2.0",
+    "mu2": "0.5.20"
   },
   "engines": {
     "node": "5.9.0"
