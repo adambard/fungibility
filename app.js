@@ -8,6 +8,10 @@ jsdom = require('jsdom').jsdom;
 mu = require('mu2');
 mu.root = __dirname + '/templates';
 
+function render(response, ctx){
+    mu.compileAndRender('index.html', ctx).pipe(response);
+}
+
 
 function serveFile(filename, response){
 
@@ -25,10 +29,25 @@ function serveFile(filename, response){
     });
 }
 
+function fetch(uri, callback){
+    uri = url.parse(uri);
+    if(uri.protocol === "https:"){
+        return https.get(uri, callback);
+    }else{
+        return http.get(uri, callback);
+    }
+}
+
 function serveReadability(uri, response){
-    uri = url.parse(uri || "https://medium.com/@mbostock/what-makes-software-good-943557f8a488")
-    https.get(uri, function(res){
+    fetch(uri, function(res){
         console.log("Got response", res.statusCode)
+        if(res.statusCode != 200){
+            return render(response, {
+                title: "Invalid URL",
+                content: "Got status code " + res.statusCode +
+                    " for url " + uri
+            });
+        }
         var src = '';
         res.on('data', function(d){ src += d; });
         res.on('end', function(){
@@ -40,16 +59,14 @@ function serveReadability(uri, response){
             }
             });
             var article = new r.Readability(uri, doc).parse();
-            var stream = mu.compileAndRender('index.html', article);
-            stream.pipe(response);
+            render(response, article);
         });
     }).on('error', function(e){
         console.log("Got error", e.message, uri)
-        var stream = mu.compileAndRender('index.html', {
+        render(response, {
             title: "Invalid URL",
             content: "<p>Invalid URL: " + uri.href + "</p>"
         });
-        stream.pipe(response);
     });
 }
 
@@ -62,8 +79,13 @@ function handleRequest(request, response){
     fs.exists(filename, function(exists) {
         if(exists && !fs.statSync(filename).isDirectory()){
             serveFile(filename, response);
-        }else{
+        }else if(uri){
             serveReadability(uri, response);
+        }else{
+            render(response, {
+                title: "Home",
+                content: "Enter a URL above to get started"
+            });
         }
     });
 }
